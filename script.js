@@ -120,11 +120,13 @@ const backgroundColorInput = document.querySelector("#background-color-input");
 const savedBackgroundColor = localStorage.getItem("sidra-portfolio-background-color") || "#071018";
 const applyBackgroundColor = color => {
   document.documentElement.style.setProperty("--bg", color);
+  document.documentElement.style.backgroundColor = color;
   document.body.style.backgroundColor = color;
   if (backgroundColorInput) backgroundColorInput.value = color;
   localStorage.setItem("sidra-portfolio-background-color", color);
 };
 if (backgroundColorInput) {
   backgroundColorInput.addEventListener("input", () => applyBackgroundColor(backgroundColorInput.value));
+  backgroundColorInput.addEventListener("change", () => applyBackgroundColor(backgroundColorInput.value));
   applyBackgroundColor(savedBackgroundColor);
 }
