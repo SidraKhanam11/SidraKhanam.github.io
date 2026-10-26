@@ -19,7 +19,9 @@ if (menuButton && nav) {
       const target = document.querySelector(link.getAttribute("href"));
       if (target) {
         event.preventDefault();
-        target.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+        target.scrollIntoView({
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
+        });
         closeMenu();
         history.replaceState(null, "", link.getAttribute("href"));
       }
@@ -56,3 +58,39 @@ if ("IntersectionObserver" in window) {
   }, { rootMargin: "-25% 0px -60% 0px" });
   sections.forEach(section => observer.observe(section));
 }
+
+/* Small quality-of-life interactions: reveal content and a back-to-top control. */
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const revealTargets = document.querySelectorAll(
+  ".section > .eyebrow, .section > h2, .section > .wide, .section > .section-intro, .skills article, .project, .experience-card, .community-card, .stats-row > div"
+);
+
+if (!reduceMotion && "IntersectionObserver" in window) {
+  document.documentElement.classList.add("reveal-ready");
+  revealTargets.forEach((element, index) => {
+    element.classList.add("reveal-on-scroll");
+    element.style.transitionDelay = (index % 4) * 55 + "ms";
+  });
+  const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-revealed");
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: "0px 0px -30px 0px" });
+  revealTargets.forEach(element => revealObserver.observe(element));
+}
+
+const backToTop = document.createElement("a");
+backToTop.className = "back-to-top";
+backToTop.href = "#home";
+backToTop.setAttribute("aria-label", "Back to top");
+backToTop.textContent = "↑";
+document.body.appendChild(backToTop);
+
+const updateBackToTop = () => {
+  backToTop.classList.toggle("is-visible", window.scrollY > 500);
+};
+window.addEventListener("scroll", updateBackToTop, { passive: true });
+updateBackToTop();
