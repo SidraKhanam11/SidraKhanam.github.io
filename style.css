@@ -278,3 +278,15 @@ nav a:hover, nav a[aria-current="location"] { color: var(--accent); }
 .background-color-picker:focus-within{outline:3px solid var(--accent);outline-offset:3px}
 body{transition:background-color .2s ease}
 @media(max-width:760px){.background-color-picker{flex-basis:36px;width:36px;height:36px}}
+
+
+/* Apply the chosen background shade to the entire page. */
+html, body { background-color: var(--bg) !important; }
+main, #home, #about, #skills, #projects, #rnd, #experience, #contact, footer {
+  background-color: transparent;
+}
+.hero {
+  background: radial-gradient(ellipse at 82% 20%, rgba(var(--accent-rgb), .09), transparent 35%),
+              linear-gradient(180deg, var(--bg), var(--bg)) !important;
+}
+.section:nth-of-type(even), .section:nth-of-type(odd) { background-color: transparent; }
