@@ -137,3 +137,42 @@ footer a{color:var(--accent);font-weight:600}
   .node-router{transform:translateX(0) scale(.82)}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+
+/* Responsive polish: clearer focus, smoother cards, mobile comfort */
+:root { --content-width: 1180px; }
+body { overflow-x: clip; }
+section[id] { scroll-margin-top: 88px; }
+::selection { background: rgba(8,127,112,.18); color: #142b3b; }
+.menu-toggle { min-width: 44px; min-height: 44px; }
+nav a { padding-block: 9px; }
+.btn, .skills article, .project, .community-card { -webkit-tap-highlight-color: transparent; }
+.project-visual { isolation: isolate; }
+.project-visual::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(120deg, transparent 20%, rgba(255,255,255,.24), transparent 75%);
+  opacity: 0; transform: translateX(-35%); transition: opacity .25s ease, transform .45s ease;
+}
+.project:hover .project-visual::after { opacity: 1; transform: translateX(25%); }
+.back-to-top {
+  position: fixed; right: 22px; bottom: 22px; z-index: 15;
+  display: grid; place-items: center; width: 46px; height: 46px;
+  border: 1px solid #c7ddd7; border-radius: 50%; background: #087f70;
+  color: #fff; text-decoration: none; font-size: 20px; font-weight: 700;
+  box-shadow: 0 8px 24px rgba(8,127,112,.24);
+  opacity: 0; visibility: hidden; transform: translateY(8px);
+  transition: opacity .2s ease, transform .2s ease, visibility .2s;
+}
+.back-to-top.is-visible { opacity: 1; visibility: visible; transform: translateY(0); }
+.back-to-top:focus-visible { outline: 3px solid #3164d9; outline-offset: 4px; }
+.reveal-ready .reveal-on-scroll { opacity: 0; transform: translateY(14px); }
+.reveal-ready .reveal-on-scroll.is-revealed { opacity: 1; transform: translateY(0); transition: opacity .5s ease, transform .5s ease; }
+@media(max-width:760px) {
+  section[id] { scroll-margin-top: 74px; }
+  .back-to-top { right: 14px; bottom: 14px; width: 42px; height: 42px; }
+  .project:hover .project-visual::after { opacity: 0; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .reveal-ready .reveal-on-scroll, .reveal-ready .reveal-on-scroll.is-revealed { opacity: 1; transform: none; transition: none; }
+  .project-visual::after { display: none; }
+}
