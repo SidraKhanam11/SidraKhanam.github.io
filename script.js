@@ -94,3 +94,22 @@ const updateBackToTop = () => {
 };
 window.addEventListener("scroll", updateBackToTop, { passive: true });
 updateBackToTop();
+
+
+/* Colour theme selector: remembers the visitor's choice on this device. */
+const themeButtons = [...document.querySelectorAll("[data-theme-choice]")];
+const savedTheme = localStorage.getItem("sidra-portfolio-theme") || "teal";
+const setTheme = theme => {
+  document.documentElement.dataset.theme = theme;
+  themeButtons.forEach(button => {
+    const selected = button.dataset.themeChoice === theme;
+    button.setAttribute("aria-pressed", String(selected));
+  });
+  const themeColors = {magenta:"#c2187a",maroon:"#800f2f",blue:"#2457c5",teal:"#087f70"};
+  const themeColor = themeColors[theme] || themeColors.teal;
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  if (themeMeta) themeMeta.setAttribute("content", themeColor);
+  localStorage.setItem("sidra-portfolio-theme", theme);
+};
+themeButtons.forEach(button => button.addEventListener("click", () => setTheme(button.dataset.themeChoice)));
+setTheme(savedTheme);
